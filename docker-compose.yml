@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector for everything
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: rag_postgres
+    environment:
+      POSTGRES_DB: rag_platform
+      POSTGRES_USER: rag_user
+      POSTGRES_PASSWORD: rag_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag_user -d rag_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend with complete RAG system
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag_backend
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://rag_user:rag_password@postgres:5432/rag_platform
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-in-production}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - CORS_ORIGINS=["http://localhost:3000"]
+      - EMBEDDING_MODEL=text-embedding-3-small
+      - DEFAULT_LLM_MODEL=gpt-4-turbo-preview
+      - SKIP_EMBEDDINGS=false
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:

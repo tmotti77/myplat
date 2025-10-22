@@ -1,0 +1,52 @@
+services:
+  # PostgreSQL with pgvector
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: rag_postgres
+    environment:
+      POSTGRES_DB: rag_platform
+      POSTGRES_USER: rag_user
+      POSTGRES_PASSWORD: RagSecureDB2024!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag_user -d rag_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Minimal FastAPI Backend
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile.basic
+    container_name: rag_backend
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://rag_user:RagSecureDB2024!@postgres:5432/rag_platform
+      - SECRET_KEY=${SECRET_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_REFRESH_SECRET_KEY=${JWT_REFRESH_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
+      - MINIO_ENDPOINT=localhost:9000
+      - CELERY_BROKER_URL=redis://localhost:6379/1
+      - CELERY_RESULT_BACKEND=redis://localhost:6379/2
+      - REDIS_URL=redis://localhost:6379/0
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+      - ./src:/app/src
+
+volumes:
+  postgres_data:
