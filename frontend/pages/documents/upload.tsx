@@ -13,7 +13,7 @@ import {
   File,
   Image,
   FileIcon
-} from 'lucide-react';
+} from '@/lib/icon-mappings';
 
 interface UploadedFile {
   file: File;

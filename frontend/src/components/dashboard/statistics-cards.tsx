@@ -65,7 +65,7 @@ import {
   PiggyBank,
   TrendingUpIcon,
   TrendingDownIcon
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 
 // Hooks
 import { useAccessibility } from '@/components/providers/accessibility-provider'

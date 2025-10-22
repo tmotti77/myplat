@@ -20,7 +20,7 @@ import {
   Grid,
   List,
   RefreshCw
-} from 'lucide-react';
+} from '@/lib/icon-mappings';
 
 interface Document {
   id: string;

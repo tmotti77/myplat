@@ -196,7 +196,7 @@ import {
   F10,
   F11,
   F12
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 
 // Hooks
 import { useDebounce } from '@/hooks/use-debounce'

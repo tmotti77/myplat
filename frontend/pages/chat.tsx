@@ -14,7 +14,7 @@ import {
   RefreshCw,
   Settings,
   Plus
-} from 'lucide-react';
+} from '@/lib/icon-mappings';
 
 interface Message {
   id: string;

@@ -25,8 +25,9 @@ from src.middleware.rate_limit import RateLimitMiddleware
 from src.middleware.request_id import RequestIDMiddleware
 from src.middleware.tenant import TenantMiddleware
 from src.middleware.error_handling import ErrorHandlingMiddleware
-from src.monitoring.health import router as health_router
-from src.monitoring.metrics import setup_metrics
+# Monitoring imports - health is provided via API router
+# from src.monitoring.health import router as health_router
+# from src.monitoring.metrics import setup_metrics
 
 
 # Configure logger
@@ -44,8 +45,8 @@ async def lifespan(app: FastAPI):
         await init_database()
         logger.info("Database initialized")
         
-        # Setup monitoring
-        setup_metrics()
+        # Setup monitoring (disabled - using API health endpoints)
+        # setup_metrics()
         logger.info("Metrics setup completed")
         
         # Initialize services
@@ -201,8 +202,8 @@ def setup_middleware(app: FastAPI):
 def setup_routers(app: FastAPI):
     """Setup application routers."""
     
-    # Health check routes (no auth required)
-    app.include_router(health_router, prefix="/health", tags=["health"])
+    # Health check routes (using API health endpoints instead)
+    # app.include_router(health_router, prefix="/health", tags=["health"])
     
     # Main API routes
     app.include_router(api_router, prefix="/api/v1")

@@ -32,7 +32,7 @@ import {
   Keyboard,
   Focus,
   ArrowUp
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 import { useState, useEffect } from 'react'
 
 // Hooks

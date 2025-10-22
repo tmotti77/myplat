@@ -4,6 +4,18 @@ import { useRouter } from 'next/router'
 import {
   Search,
   Filter,
+  X,
+  Mic,
+  MicOff,
+  Sparkles,
+  Loader,
+  ChevronDown,
+  History,
+  Check
+} from '@/lib/icon-mappings'
+/*import {
+  Search,
+  Filter,
   SlidersHorizontal,
   Calendar,
   User,
@@ -306,7 +318,7 @@ import {
   Krishna as KrishnaAvatar,
   Buddha as BuddhAvatar,
   Kalki as KalkiAvatar
-} from 'lucide-react'
+} from '@/lib/icon-mappings'*/
 
 // Hooks
 import { useDebounce } from '@/hooks/use-debounce'
