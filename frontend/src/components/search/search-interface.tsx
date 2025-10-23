@@ -29,7 +29,8 @@ import {
   Video,
   Music,
   Bookmark,
-  TrendingUp
+  TrendingUp,
+  ImageIcon
 } from '@/lib/icon-mappings'
 /*import {
   Search,
@@ -464,7 +465,7 @@ export function SearchInterface({
         { value: 'ppt', label: 'Presentation', icon: FileText },
         { value: 'xlsx', label: 'Spreadsheet', icon: BarChart3 },
         { value: 'txt', label: 'Text File', icon: FileText },
-        { value: 'image', label: 'Image', icon: Image },
+        { value: 'image', label: 'Image', icon: ImageIcon },
         { value: 'video', label: 'Video', icon: Video },
         { value: 'audio', label: 'Audio', icon: Music }
       ],

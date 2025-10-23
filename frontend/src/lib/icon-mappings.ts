@@ -121,3 +121,4 @@ export const SlidersHorizontal = (LucideIcons as any).SlidersHorizontal || Lucid
 export const Bookmark = LucideIcons.Bookmark;
 export const TrendingUp = LucideIcons.TrendingUp;
 export const Loader2 = LucideIcons.Loader;
+export const ImageIcon = LucideIcons.Image;

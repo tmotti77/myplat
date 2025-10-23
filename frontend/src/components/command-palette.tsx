@@ -267,7 +267,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Home,
       category: 'navigation',
       keywords: ['dashboard', 'home', 'main'],
-      action: () => router.push('/'),
+      action: async () => { await router.push('/') },
       href: '/',
       shortcut: ['g', 'd'],
       priority: 10
@@ -279,7 +279,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: FileText,
       category: 'navigation',
       keywords: ['documents', 'files', 'browse'],
-      action: () => router.push('/documents'),
+      action: async () => { await router.push('/documents') },
       href: '/documents',
       shortcut: ['g', 'f'],
       priority: 9
@@ -291,7 +291,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Search,
       category: 'navigation',
       keywords: ['search', 'find', 'lookup'],
-      action: () => router.push('/search'),
+      action: async () => { await router.push('/search') },
       href: '/search',
       shortcut: ['/', 's'],
       priority: 8
@@ -303,7 +303,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Bookmark,
       category: 'navigation',
       keywords: ['collections', 'bookmarks', 'organize'],
-      action: () => router.push('/collections'),
+      action: async () => { await router.push('/collections') },
       href: '/collections',
       shortcut: ['g', 'c'],
       priority: 7
@@ -315,7 +315,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Users,
       category: 'navigation',
       keywords: ['team', 'users', 'members', 'collaborate'],
-      action: () => router.push('/team'),
+      action: async () => { await router.push('/team') },
       href: '/team',
       shortcut: ['g', 't'],
       priority: 6
@@ -327,7 +327,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Settings,
       category: 'navigation',
       keywords: ['settings', 'preferences', 'config'],
-      action: () => router.push('/settings'),
+      action: async () => { await router.push('/settings') },
       href: '/settings',
       shortcut: ['g', 's'],
       priority: 5
@@ -341,7 +341,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Upload,
       category: 'actions',
       keywords: ['upload', 'add', 'import', 'file'],
-      action: () => router.push('/upload'),
+      action: async () => { await router.push('/upload') },
       href: '/upload',
       shortcut: ['u'],
       priority: 10
@@ -353,7 +353,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: MessageSquare,
       category: 'actions',
       keywords: ['chat', 'ai', 'assistant', 'ask'],
-      action: () => router.push('/chat'),
+      action: async () => { await router.push('/chat') },
       href: '/chat',
       shortcut: ['c'],
       priority: 9
@@ -365,7 +365,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: FolderPlus,
       category: 'actions',
       keywords: ['create', 'collection', 'folder', 'organize'],
-      action: () => router.push('/collections/new'),
+      action: async () => { await router.push('/collections/new') },
       href: '/collections/new',
       priority: 8
     },
@@ -376,7 +376,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: UserPlus,
       category: 'actions',
       keywords: ['invite', 'user', 'team', 'member', 'collaborate'],
-      action: () => router.push('/team/invite'),
+      action: async () => { await router.push('/team/invite') },
       href: '/team/invite',
       priority: 7
     },
@@ -387,7 +387,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Camera,
       category: 'actions',
       keywords: ['scan', 'camera', 'ocr', 'capture'],
-      action: () => router.push('/scan'),
+      action: async () => { await router.push('/scan') },
       href: '/scan',
       priority: 6
     },
@@ -400,7 +400,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Brain,
       category: 'ai',
       keywords: ['ai', 'insights', 'analysis', 'smart'],
-      action: () => router.push('/insights'),
+      action: async () => { await router.push('/insights') },
       href: '/insights',
       premium: true,
       priority: 9
@@ -453,7 +453,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: BarChart3,
       category: 'tools',
       keywords: ['analytics', 'stats', 'metrics', 'usage'],
-      action: () => router.push('/analytics'),
+      action: async () => { await router.push('/analytics') },
       href: '/analytics',
       priority: 5
     },
@@ -479,7 +479,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: User,
       category: 'settings',
       keywords: ['profile', 'account', 'personal', 'info'],
-      action: () => router.push('/settings/profile'),
+      action: async () => { await router.push('/settings/profile') },
       href: '/settings/profile',
       priority: 7
     },
@@ -490,7 +490,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Shield,
       category: 'settings',
       keywords: ['security', 'password', 'auth', 'safety'],
-      action: () => router.push('/settings/security'),
+      action: async () => { await router.push('/settings/security') },
       href: '/settings/security',
       priority: 6
     },
@@ -501,7 +501,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Zap,
       category: 'settings',
       keywords: ['integrations', 'apps', 'connect', 'api'],
-      action: () => router.push('/settings/integrations'),
+      action: async () => { await router.push('/settings/integrations') },
       href: '/settings/integrations',
       priority: 5
     },
@@ -512,7 +512,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Crown,
       category: 'settings',
       keywords: ['billing', 'subscription', 'payment', 'plan'],
-      action: () => router.push('/settings/billing'),
+      action: async () => { await router.push('/settings/billing') },
       href: '/settings/billing',
       priority: 4
     },
@@ -525,7 +525,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: HelpCircle,
       category: 'help',
       keywords: ['help', 'docs', 'documentation', 'guide'],
-      action: () => router.push('/docs'),
+      action: async () => { await router.push('/docs') },
       href: '/docs',
       priority: 8
     },
@@ -549,7 +549,7 @@ export function CommandPalette({ open, onOpenChange, className }: CommandPalette
       icon: Mail,
       category: 'help',
       keywords: ['support', 'help', 'contact', 'assistance'],
-      action: () => router.push('/support'),
+      action: async () => { await router.push('/support') },
       href: '/support',
       priority: 6
     },
