@@ -107,3 +107,4 @@ dist/
 *.tmp
 *.temp
 .env.secure-keys
+API_KEY_NOTE.md
