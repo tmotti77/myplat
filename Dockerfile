@@ -28,7 +28,7 @@ RUN pip install poetry==1.7.1
 
 # Configure poetry
 ENV POETRY_NO_INTERACTION=1 \
-    POETRY_VENV_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR=/tmp/poetry_cache
 
 WORKDIR /app
@@ -36,9 +36,8 @@ WORKDIR /app
 # Copy poetry files
 COPY pyproject.toml poetry.lock* ./
 
-# Export and install dependencies with pip for more reliable builds
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
-RUN pip install --no-cache-dir -r requirements.txt && rm requirements.txt
+# Install dependencies directly with poetry (skip export to avoid lock file issues)
+RUN poetry install --no-dev --no-root && rm -rf $POETRY_CACHE_DIR
 
 # Production stage
 FROM base as production
@@ -62,11 +61,8 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
 # Expose port
 EXPOSE 8000
 
-# Set PATH to include venv
-ENV PATH="/app/.venv/bin:$PATH"
-
-# Command to run the application  
-CMD ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 # Development stage
 FROM base as development
