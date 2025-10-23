@@ -9,6 +9,7 @@ import {
   MicOff,
   Sparkles,
   Loader,
+  Loader2,
   ChevronDown,
   History,
   Check,
@@ -26,7 +27,9 @@ import {
   Database,
   Globe,
   Video,
-  Music
+  Music,
+  Bookmark,
+  TrendingUp
 } from '@/lib/icon-mappings'
 /*import {
   Search,
@@ -640,7 +643,7 @@ export function SearchInterface({
       return
     }
 
-    const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
     const recognition = new SpeechRecognition()
 
     recognition.continuous = false
@@ -652,13 +655,13 @@ export function SearchInterface({
       announceAction(t('search:listeningStarted'), 'polite')
     }
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript
       onChange(transcript)
       announceAction(t('search:voiceInputReceived', { text: transcript }), 'polite')
     }
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error)
       announceAction(t('search:voiceError'), 'assertive')
     }
@@ -712,7 +715,7 @@ export function SearchInterface({
     }
   }
 
-  const currentMode = searchModes.find(m => m.id === mode) || searchModes[0]
+  const currentMode = searchModes.find(m => m.id === mode) || searchModes[0]!
   const ModeIcon = currentMode.icon
 
   return (

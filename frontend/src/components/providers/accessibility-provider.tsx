@@ -214,13 +214,16 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   }, [settings.keyboardNavigation])
 
   const updateSetting = (key: keyof AccessibilitySettings, value: boolean | number) => {
-    setSettings(current => ({
-      ...current,
-      [key]: value,
+    setSettings(current => {
+      const newSettings: AccessibilitySettings = {
+        ...current,
+        [key]: value,
+      }
       // Sync reducedMotion with reduceMotion
-      ...(key === 'reduceMotion' ? { reducedMotion: value } : {}),
-      ...(key === 'reducedMotion' ? { reduceMotion: value } : {}),
-    }))
+      if (key === 'reduceMotion') newSettings.reducedMotion = value as boolean
+      if (key === 'reducedMotion') newSettings.reduceMotion = value as boolean
+      return newSettings
+    })
   }
 
   const updatePreferences = (updates: Partial<AccessibilitySettings>) => {

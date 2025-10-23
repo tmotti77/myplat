@@ -139,7 +139,7 @@ export function Sidebar({ isOpen, onClose, className }: SidebarProps) {
     ]
 
     setTenants(mockTenants)
-    setCurrentTenant(mockTenants[0])
+    setCurrentTenant(mockTenants[0] || null)
     setNotifications(3) // Mock notification count
   }, [])
 
@@ -401,14 +401,14 @@ export function Sidebar({ isOpen, onClose, className }: SidebarProps) {
               <ChevronRight className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
             )}
           </button>
-          <div 
+          <div
             id={`section-${item.id}`}
             className={cn(
               'mt-1 space-y-1',
               !isExpanded && 'hidden'
             )}
           >
-            {item.children.map(child => renderNavigationItem(child, level + 1))}
+            {item.children?.map(child => renderNavigationItem(child, level + 1))}
           </div>
         </div>
       )

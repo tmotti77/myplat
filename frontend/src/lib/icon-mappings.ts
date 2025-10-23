@@ -51,7 +51,7 @@ export const F11 = LucideIcons.Square;
 export const F12 = LucideIcons.Square;
 
 // Math and symbols
-export const NotEqual = LucideIcons.NotEqual || LucideIcons.XCircle;
+export const NotEqual = (LucideIcons as any).NotEqual || LucideIcons.XCircle;
 export const GreaterThan = LucideIcons.ChevronRight;
 export const LessThan = LucideIcons.ChevronLeft;
 export const GreaterThanOrEqual = LucideIcons.ChevronsRight;
@@ -118,3 +118,6 @@ export const Option = LucideIcons.Square;
 // Additional icon mappings for search interface
 export const Brain = (LucideIcons as any).Brain || LucideIcons.Lightbulb;
 export const SlidersHorizontal = (LucideIcons as any).SlidersHorizontal || LucideIcons.Sliders;
+export const Bookmark = LucideIcons.Bookmark;
+export const TrendingUp = LucideIcons.TrendingUp;
+export const Loader2 = LucideIcons.Loader;

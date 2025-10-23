@@ -355,13 +355,13 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'view-document',
             label: t('notifications:viewDocument'),
             type: 'primary',
-            action: () => router.push('/documents/annual-report-2024')
+            action: async () => { await router.push('/documents/annual-report-2024') }
           },
           {
             id: 'start-analysis',
             label: t('notifications:startAnalysis'),
             type: 'secondary',
-            action: () => router.push('/documents/annual-report-2024?action=analyze')
+            action: async () => { await router.push('/documents/annual-report-2024?action=analyze') }
           }
         ],
         metadata: {
@@ -399,7 +399,7 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'view-profile',
             label: t('notifications:viewProfile'),
             type: 'primary',
-            action: () => router.push('/team/sarah-johnson')
+            action: async () => { await router.push('/team/sarah-johnson') }
           },
           {
             id: 'send-welcome',
@@ -433,13 +433,13 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'upgrade-plan',
             label: t('notifications:upgradePlan'),
             type: 'primary',
-            action: () => router.push('/settings/billing')
+            action: async () => { await router.push('/settings/billing') }
           },
           {
             id: 'manage-storage',
             label: t('notifications:manageStorage'),
             type: 'secondary',
-            action: () => router.push('/settings/storage')
+            action: async () => { await router.push('/settings/storage') }
           }
         ],
         metadata: {
@@ -471,7 +471,7 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'view-insights',
             label: t('notifications:viewInsights'),
             type: 'primary',
-            action: () => router.push('/insights/market-research-q4')
+            action: async () => { await router.push('/insights/market-research-q4') }
           }
         ],
         metadata: {
@@ -498,7 +498,7 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'secure-account',
             label: t('notifications:secureAccount'),
             type: 'destructive',
-            action: () => router.push('/settings/security')
+            action: async () => { await router.push('/settings/security') }
           },
           {
             id: 'was-me',
@@ -548,7 +548,7 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'open-document',
             label: t('notifications:openDocument'),
             type: 'primary',
-            action: () => router.push('/documents/design-guidelines')
+            action: async () => { await router.push('/documents/design-guidelines') }
           }
         ],
         groupId: 'shared-documents'
@@ -570,7 +570,7 @@ export function NotificationCenter({ open, onOpenChange, className }: Notificati
             id: 'learn-more',
             label: t('notifications:learnMore'),
             type: 'secondary',
-            action: () => router.push('/status')
+            action: async () => { await router.push('/status') }
           }
         ],
         metadata: {
