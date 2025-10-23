@@ -108,3 +108,5 @@ dist/
 *.temp
 .env.secure-keys
 API_KEY_NOTE.md
+DEPLOYMENT_CREDENTIALS.md
+COPY_PASTE_THIS.txt
