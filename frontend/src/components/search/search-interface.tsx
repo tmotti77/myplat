@@ -11,7 +11,22 @@ import {
   Loader,
   ChevronDown,
   History,
-  Check
+  Check,
+  SlidersHorizontal,
+  Brain,
+  FileText,
+  BarChart3,
+  Calendar,
+  User,
+  Tag,
+  Star,
+  Edit,
+  CheckCircle,
+  Archive,
+  Database,
+  Globe,
+  Video,
+  Music
 } from '@/lib/icon-mappings'
 /*import {
   Search,

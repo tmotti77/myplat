@@ -114,3 +114,7 @@ export const Hole = LucideIcons.Circle;
 export const Flip = LucideIcons.FlipHorizontal;
 export const Bolt = LucideIcons.Zap;
 export const Option = LucideIcons.Square;
+
+// Additional icon mappings for search interface
+export const Brain = (LucideIcons as any).Brain || LucideIcons.Lightbulb;
+export const SlidersHorizontal = (LucideIcons as any).SlidersHorizontal || LucideIcons.Sliders;

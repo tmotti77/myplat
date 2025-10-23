@@ -7,14 +7,43 @@ interface AccessibilitySettings {
   focusVisible: boolean
   announcements: boolean
   keyboardNavigation: boolean
+  // Extended settings for accessibility menu
+  fontSize: number
+  zoomLevel: number
+  reducedMotion: boolean  // Alias for reduceMotion
+  enhancedFocus: boolean
+  screenReaderMode: boolean
+  audioDescriptions: boolean
+  soundFeedback: boolean
+  speechRate: number
+  stickyKeys: boolean
+  mouseKeys: boolean
+  clickTimeout: number
+  readingGuide: boolean
+  dyslexiaFont: boolean
+  contentPause: boolean
+  simplifiedUI: boolean
+  skipLinks: boolean
+  landmarkNavigation: boolean
+  headingNavigation: boolean
+  autoSave: boolean
 }
 
 interface AccessibilityContextType {
   settings: AccessibilitySettings
-  updateSetting: (key: keyof AccessibilitySettings, value: boolean) => void
+  preferences: AccessibilitySettings  // Alias for settings
+  updateSetting: (key: keyof AccessibilitySettings, value: boolean | number) => void
+  updatePreferences: (updates: Partial<AccessibilitySettings>) => void  // Accepts partial settings object
   announce: (message: string, priority?: 'polite' | 'assertive') => void
+  announceAction: (message: string, priority?: 'polite' | 'assertive') => void  // Announce user actions with optional priority
   isReducedMotion: boolean
   isHighContrast: boolean
+  enableHighContrast: () => void
+  disableHighContrast: () => void
+  enableReducedMotion: () => void
+  disableReducedMotion: () => void
+  enableScreenReader: () => void
+  disableScreenReader: () => void
 }
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined)
@@ -26,6 +55,26 @@ const defaultSettings: AccessibilitySettings = {
   focusVisible: true,
   announcements: true,
   keyboardNavigation: true,
+  // Extended settings defaults
+  fontSize: 16,
+  zoomLevel: 100,
+  reducedMotion: false,
+  enhancedFocus: false,
+  screenReaderMode: false,
+  audioDescriptions: false,
+  soundFeedback: false,
+  speechRate: 1.0,
+  stickyKeys: false,
+  mouseKeys: false,
+  clickTimeout: 500,
+  readingGuide: false,
+  dyslexiaFont: false,
+  contentPause: false,
+  simplifiedUI: false,
+  skipLinks: true,
+  landmarkNavigation: true,
+  headingNavigation: true,
+  autoSave: false,
 }
 
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
@@ -130,17 +179,17 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
           case '1':
             event.preventDefault()
             const mainHeading = document.querySelector('h1')
-            mainHeading?.focus()
+            ;(mainHeading as HTMLElement)?.focus()
             break
           case '2':
             event.preventDefault()
             const navigation = document.querySelector('nav')
-            navigation?.focus()
+            ;(navigation as HTMLElement)?.focus()
             break
           case '3':
             event.preventDefault()
             const main = document.querySelector('main, [role="main"]')
-            main?.focus()
+            ;(main as HTMLElement)?.focus()
             break
           case '4':
             event.preventDefault()
@@ -164,8 +213,24 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     }
   }, [settings.keyboardNavigation])
 
-  const updateSetting = (key: keyof AccessibilitySettings, value: boolean) => {
-    setSettings(current => ({ ...current, [key]: value }))
+  const updateSetting = (key: keyof AccessibilitySettings, value: boolean | number) => {
+    setSettings(current => ({
+      ...current,
+      [key]: value,
+      // Sync reducedMotion with reduceMotion
+      ...(key === 'reduceMotion' ? { reducedMotion: value } : {}),
+      ...(key === 'reducedMotion' ? { reduceMotion: value } : {}),
+    }))
+  }
+
+  const updatePreferences = (updates: Partial<AccessibilitySettings>) => {
+    setSettings(current => ({
+      ...current,
+      ...updates,
+      // Sync reducedMotion with reduceMotion
+      ...('reduceMotion' in updates ? { reducedMotion: updates.reduceMotion } : {}),
+      ...('reducedMotion' in updates ? { reduceMotion: updates.reducedMotion } : {}),
+    }))
   }
 
   const announce = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
@@ -180,12 +245,33 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     }, 1000)
   }
 
+  // Helper functions for specific accessibility features
+  const announceAction = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
+    announce(message, priority)
+  }
+
+  const enableHighContrast = () => updateSetting('highContrast', true)
+  const disableHighContrast = () => updateSetting('highContrast', false)
+  const enableReducedMotion = () => updateSetting('reduceMotion', true)
+  const disableReducedMotion = () => updateSetting('reduceMotion', false)
+  const enableScreenReader = () => updateSetting('announcements', true)
+  const disableScreenReader = () => updateSetting('announcements', false)
+
   const value: AccessibilityContextType = {
     settings,
+    preferences: settings,  // Alias
     updateSetting,
+    updatePreferences,  // Accepts partial settings objects
     announce,
+    announceAction,
     isReducedMotion: settings.reduceMotion,
     isHighContrast: settings.highContrast,
+    enableHighContrast,
+    disableHighContrast,
+    enableReducedMotion,
+    disableReducedMotion,
+    enableScreenReader,
+    disableScreenReader,
   }
 
   return (
