@@ -17,23 +17,51 @@ interface KeyboardShortcut {
   preventDefault?: boolean
 }
 
+// Simpler object notation for shortcuts
+type ShortcutMap = Record<string, ((e: KeyboardEvent) => void) | (() => void)>
+
 interface UseKeyboardShortcutsOptions {
-  shortcuts: KeyboardShortcut[]
+  shortcuts?: KeyboardShortcut[]
   enabled?: boolean
   target?: HTMLElement | Document
+  // Support simple object notation like { 'cmd+k': () => {} }
+  [key: string]: any
 }
 
-export function useKeyboardShortcuts({
-  shortcuts,
-  enabled = true,
-  target = document
-}: UseKeyboardShortcutsOptions) {
-  const shortcutsRef = useRef(shortcuts)
-  
+export function useKeyboardShortcuts(
+  options: UseKeyboardShortcutsOptions | ShortcutMap
+) {
+  // Handle both object notations
+  const isSimpleMap = !('shortcuts' in options) && !('enabled' in options) && !('target' in options)
+
+  const shortcuts = isSimpleMap ? [] : (options as UseKeyboardShortcutsOptions).shortcuts || []
+  const enabled = isSimpleMap ? true : (options as UseKeyboardShortcutsOptions).enabled ?? true
+  const target = isSimpleMap ? document : (options as UseKeyboardShortcutsOptions).target || document
+
+  // Convert simple map to shortcuts array
+  const simpleShortcuts: KeyboardShortcut[] = isSimpleMap
+    ? Object.entries(options as ShortcutMap).map(([keyCombo, action]) => {
+        const parts = keyCombo.toLowerCase().split('+')
+        const key = parts[parts.length - 1] || ''
+        return {
+          key,
+          ctrlKey: parts.includes('ctrl') || parts.includes('cmd'),
+          shiftKey: parts.includes('shift'),
+          altKey: parts.includes('alt'),
+          metaKey: parts.includes('cmd') || parts.includes('meta'),
+          action: () => action({} as KeyboardEvent),
+          preventDefault: true
+        }
+      })
+    : []
+
+  const allShortcuts = [...shortcuts, ...simpleShortcuts]
+  const shortcutsRef = useRef(allShortcuts)
+
   // Update shortcuts ref when shortcuts change
   useEffect(() => {
-    shortcutsRef.current = shortcuts
-  }, [shortcuts])
+    shortcutsRef.current = allShortcuts
+  }, [allShortcuts])
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (!enabled) return
@@ -62,10 +90,10 @@ export function useKeyboardShortcuts({
     if (!enabled) return
 
     const targetElement = target as EventTarget
-    targetElement.addEventListener('keydown', handleKeyDown)
+    targetElement.addEventListener('keydown', handleKeyDown as EventListener)
 
     return () => {
-      targetElement.removeEventListener('keydown', handleKeyDown)
+      targetElement.removeEventListener('keydown', handleKeyDown as EventListener)
     }
   }, [handleKeyDown, enabled, target])
 

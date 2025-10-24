@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Eye, EyeOff, Loader, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, Loader, AlertCircle } from '@/lib/icon-mappings';
 
 interface LoginForm {
   email: string;

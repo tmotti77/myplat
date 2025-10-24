@@ -255,3 +255,10 @@ class AnalyticsService:
 async def get_analytics_service():
     """Get analytics service instance."""
     return AnalyticsService()
+
+
+# Redis dependency
+async def get_redis_client():
+    """Get Redis client for health checks and caching."""
+    # Return cache service which wraps Redis
+    return cache_service

@@ -20,10 +20,10 @@ const RTL_LANGUAGES = [
 export function useDirection(locale?: string): 'ltr' | 'rtl' {
   return useMemo(() => {
     if (!locale) return 'ltr'
-    
+
     // Extract language code from locale (e.g., 'en-US' -> 'en')
-    const language = locale.split('-')[0].toLowerCase()
-    
+    const language = (locale.split('-')[0] || 'en').toLowerCase()
+
     return RTL_LANGUAGES.includes(language) ? 'rtl' : 'ltr'
   }, [locale])
 }

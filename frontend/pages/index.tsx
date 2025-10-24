@@ -52,8 +52,9 @@ export default function HomePage() {
                       Ask questions about your documents or search for specific information
                     </p>
                   </div>
-                  <SearchInterface 
-                    onSearch={(query) => setSearchQuery(query)}
+                  <SearchInterface
+                    value={searchQuery}
+                    onChange={(query: string) => setSearchQuery(query)}
                     placeholder="Ask anything about your documents..."
                   />
                 </div>

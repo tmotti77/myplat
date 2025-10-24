@@ -68,7 +68,7 @@ import {
   Umbrella,
   Wind,
   Thermometer
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 import Image from 'next/image'
 
 // Hooks

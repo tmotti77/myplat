@@ -4,6 +4,37 @@ import { useRouter } from 'next/router'
 import {
   Search,
   Filter,
+  X,
+  Mic,
+  MicOff,
+  Sparkles,
+  Loader,
+  Loader2,
+  ChevronDown,
+  History,
+  Check,
+  SlidersHorizontal,
+  Brain,
+  FileText,
+  BarChart3,
+  Calendar,
+  User,
+  Tag,
+  Star,
+  Edit,
+  CheckCircle,
+  Archive,
+  Database,
+  Globe,
+  Video,
+  Music,
+  Bookmark,
+  TrendingUp,
+  ImageIcon
+} from '@/lib/icon-mappings'
+/*import {
+  Search,
+  Filter,
   SlidersHorizontal,
   Calendar,
   User,
@@ -306,7 +337,7 @@ import {
   Krishna as KrishnaAvatar,
   Buddha as BuddhAvatar,
   Kalki as KalkiAvatar
-} from 'lucide-react'
+} from '@/lib/icon-mappings'*/
 
 // Hooks
 import { useDebounce } from '@/hooks/use-debounce'
@@ -434,7 +465,7 @@ export function SearchInterface({
         { value: 'ppt', label: 'Presentation', icon: FileText },
         { value: 'xlsx', label: 'Spreadsheet', icon: BarChart3 },
         { value: 'txt', label: 'Text File', icon: FileText },
-        { value: 'image', label: 'Image', icon: Image },
+        { value: 'image', label: 'Image', icon: ImageIcon },
         { value: 'video', label: 'Video', icon: Video },
         { value: 'audio', label: 'Audio', icon: Music }
       ],
@@ -613,7 +644,7 @@ export function SearchInterface({
       return
     }
 
-    const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
     const recognition = new SpeechRecognition()
 
     recognition.continuous = false
@@ -625,13 +656,13 @@ export function SearchInterface({
       announceAction(t('search:listeningStarted'), 'polite')
     }
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript
       onChange(transcript)
       announceAction(t('search:voiceInputReceived', { text: transcript }), 'polite')
     }
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error)
       announceAction(t('search:voiceError'), 'assertive')
     }
@@ -685,7 +716,7 @@ export function SearchInterface({
     }
   }
 
-  const currentMode = searchModes.find(m => m.id === mode) || searchModes[0]
+  const currentMode = searchModes.find(m => m.id === mode) || searchModes[0]!
   const ModeIcon = currentMode.icon
 
   return (

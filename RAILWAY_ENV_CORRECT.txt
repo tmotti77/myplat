@@ -1,0 +1,76 @@
+===========================================
+RAILWAY ENVIRONMENT VARIABLES - CORRECT VERSION
+Use these values (with connection pooling URL)
+===========================================
+
+DATABASE_URL=postgresql+asyncpg://postgres:[YOUR_PASSWORD]@db.[YOUR_PROJECT_ID]-pooler.supabase.co:5432/postgres
+REDIS_URL=redis://default:[YOUR_UPSTASH_TOKEN]@[YOUR_REDIS_HOST].upstash.io:6379
+OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
+JWT_SECRET_KEY=[YOUR_JWT_SECRET_KEY]
+SECRET_KEY=[YOUR_SECRET_KEY]
+ENCRYPTION_KEY=[YOUR_ENCRYPTION_KEY]
+SUPABASE_URL=https://[YOUR_PROJECT_ID].supabase.co
+SUPABASE_KEY=[YOUR_SUPABASE_ANON_KEY]
+SUPABASE_SERVICE_KEY=[YOUR_SUPABASE_SERVICE_KEY]
+MINIO_BUCKET_NAME=rag-documents
+ENVIRONMENT=production
+LOG_LEVEL=INFO
+PYTHONPATH=/app
+CORS_ORIGINS=["*"]
+EMBEDDING_MODEL=text-embedding-3-large
+DEFAULT_LLM_MODEL=gpt-4-turbo-preview
+TEMPERATURE=0.1
+MAX_TOKENS=4000
+ENABLE_REAL_TIME_UPDATES=true
+ENABLE_ADVANCED_ANALYTICS=true
+ENABLE_EXPERT_SYSTEM=true
+ENABLE_FEEDBACK_LEARNING=true
+JWT_REFRESH_SECRET_KEY=[YOUR_JWT_REFRESH_SECRET_KEY]
+CELERY_BROKER_URL=redis://default:[YOUR_UPSTASH_TOKEN]@[YOUR_REDIS_HOST].upstash.io:6379/1
+CELERY_RESULT_BACKEND=redis://default:[YOUR_UPSTASH_TOKEN]@[YOUR_REDIS_HOST].upstash.io:6379/2
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin123
+
+===========================================
+KEY DIFFERENCE FROM PREVIOUS VERSION:
+===========================================
+
+OLD (doesn't work with Railway):
+DATABASE_URL=postgresql+asyncpg://postgres:[PASSWORD]@db.[PROJECT_ID].supabase.co:5432/postgres
+
+NEW (works with Railway):
+DATABASE_URL=postgresql+asyncpg://postgres:[PASSWORD]@db.[PROJECT_ID]-pooler.supabase.co:5432/postgres
+                                                                       ^^^^^^^
+                                                                       Notice the -pooler suffix!
+
+===========================================
+HOW TO UPDATE IN RAILWAY:
+===========================================
+
+1. Go to Railway dashboard
+2. Click "Variables" tab
+3. Find DATABASE_URL
+4. Replace with the new URL (with -pooler)
+5. Railway will auto-redeploy
+6. Check logs - should see "Application startup complete"
+
+===========================================
+IMPORTANT NOTES:
+===========================================
+
+- Replace all [YOUR_*] placeholders with your actual values
+- The real values are in RAILWAY_ENV_COMPLETE.txt (local file, not in git)
+- Never commit actual API keys to git
+- Use the values from your local environment files
+
+===========================================
+WHY THIS MATTERS:
+===========================================
+
+- Direct connection = meant for long-lived local dev
+- Pooler connection = meant for Railway/serverless
+- Fixes "Network unreachable" error
+- Much more reliable for container deployments
+- Prevents connection limit issues
+
+===========================================

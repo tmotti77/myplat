@@ -65,7 +65,7 @@ import {
   PiggyBank,
   TrendingUpIcon,
   TrendingDownIcon
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 
 // Hooks
 import { useAccessibility } from '@/components/providers/accessibility-provider'
@@ -534,7 +534,7 @@ export function StatisticsCards({
                 stat.clickable && 'hover:shadow-lg hover:scale-[1.02] cursor-pointer',
                 stat.premium && 'ring-1 ring-yellow-200 dark:ring-yellow-800'
               )}
-              onClick={stat.clickable && stat.href ? () => window.location.href = stat.href : undefined}
+              onClick={stat.clickable && stat.href ? () => window.location.href = stat.href! : undefined}
             >
               {/* Premium badge */}
               {stat.premium && (

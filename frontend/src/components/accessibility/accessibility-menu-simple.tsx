@@ -11,7 +11,7 @@ import {
   Contrast,
   Volume2,
   X
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 
 interface AccessibilityMenuProps {
   open: boolean

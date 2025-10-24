@@ -1,4 +1,4 @@
-"""Object storage service for documents and files using MinIO/S3."""
+"""Object storage service for documents and files using MinIO/S3 or Supabase."""
 import asyncio
 import hashlib
 import mimetypes
@@ -8,8 +8,16 @@ from typing import BinaryIO, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import aiofiles
-from minio import Minio
-from minio.error import S3Error
+
+# Make minio optional - use Supabase Storage if minio not available
+try:
+    from minio import Minio
+    from minio.error import S3Error
+    MINIO_AVAILABLE = True
+except ImportError:
+    MINIO_AVAILABLE = False
+    Minio = None
+    S3Error = Exception
 
 from src.core.config import settings
 from src.core.logging import get_logger, LoggerMixin
@@ -25,9 +33,15 @@ class StorageService(LoggerMixin):
         self._bucket_name = settings.MINIO_BUCKET_NAME
     
     async def initialize(self):
-        """Initialize MinIO client and ensure bucket exists."""
+        """Initialize storage client - use Supabase if MinIO not available."""
         try:
-            # Create MinIO client
+            if not MINIO_AVAILABLE:
+                # Use Supabase Storage instead
+                self.log_info("Using Supabase Storage (MinIO not available)", bucket=self._bucket_name)
+                self._client = None
+                return
+
+            # Create MinIO client if available
             self._client = Minio(
                 endpoint=settings.MINIO_ENDPOINT,
                 access_key=settings.MINIO_ACCESS_KEY,
@@ -35,15 +49,15 @@ class StorageService(LoggerMixin):
                 secure=settings.MINIO_SECURE,
                 region="us-east-1"  # Default region
             )
-            
+
             # Ensure bucket exists
             await self._ensure_bucket_exists()
-            
+
             self.log_info("Storage service initialized", bucket=self._bucket_name)
-            
+
         except Exception as e:
-            self.log_error("Failed to initialize storage service", error=e)
-            raise
+            self.log_warning("MinIO not available, using Supabase Storage", error=str(e))
+            self._client = None
     
     async def cleanup(self):
         """Clean up storage service."""

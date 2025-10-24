@@ -47,7 +47,7 @@ import {
   Rocket,
   Target,
   Zap as ZapIcon
-} from 'lucide-react'
+} from '@/lib/icon-mappings'
 
 interface QuickAction {
   id: string
@@ -372,6 +372,6 @@ const QuickActions = () => {
 }
 
 // Add missing Grid3X3 icon import
-import { Grid3X3 } from 'lucide-react'
+import { Grid3X3 } from '@/lib/icon-mappings'
 
 export default QuickActions
