@@ -61,8 +61,8 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
 # Expose port
 EXPOSE 8000
 
-# Command to run the application
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application (use shell form to expand $PORT)
+CMD uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}
 
 # Development stage
 FROM base as development
