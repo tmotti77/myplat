@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 # Install Poetry
 RUN pip install poetry==1.7.1
 
-# Configure poetry
+# Configure poetry - disable virtualenv creation
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR=/tmp/poetry_cache
@@ -36,7 +36,7 @@ WORKDIR /app
 # Copy poetry files
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies directly with poetry (skip export to avoid lock file issues)
+# Install dependencies directly (no virtualenv needed in container)
 RUN poetry install --no-dev --no-root && rm -rf $POETRY_CACHE_DIR
 
 # Production stage
@@ -51,18 +51,11 @@ COPY migrations/ ./migrations/
 # Create directories
 RUN mkdir -p /app/uploads /app/logs /app/models
 
-# Set permissions
-RUN chmod +x src/main.py
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
-
 # Expose port
 EXPOSE 8000
 
-# Command to run the application (use shell form to expand $PORT)
-CMD uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Use shell form CMD to properly expand environment variables
+CMD ["sh", "-c", "uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
 
 # Development stage
 FROM base as development
