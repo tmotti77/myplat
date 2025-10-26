@@ -16,15 +16,8 @@ class Settings(BaseSettings):
     APP_VERSION: str = Field(default="1.0.0", env="APP_VERSION")
     APP_DESCRIPTION: str = Field(default="Production-ready hybrid RAG AI platform", env="APP_DESCRIPTION")
     APP_HOST: str = Field(default="0.0.0.0", env="APP_HOST")
-    APP_PORT: int = Field(default=8000)
+    APP_PORT: int = Field(default=8000, env="APP_PORT")
     APP_DEBUG: bool = Field(default=False, env="APP_DEBUG")
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Railway provides PORT instead of APP_PORT
-        if not hasattr(self, 'APP_PORT') or self.APP_PORT == 8000:
-            port = os.getenv('PORT') or os.getenv('APP_PORT', '8000')
-            self.APP_PORT = int(port)
     APP_RELOAD: bool = Field(default=False, env="APP_RELOAD")
     
     # Database
@@ -34,7 +27,7 @@ class Settings(BaseSettings):
     DATABASE_ECHO: bool = Field(default=False, env="DATABASE_ECHO")
     
     # Redis
-    REDIS_URL: RedisDsn = Field(env="REDIS_URL")
+    REDIS_URL: Optional[RedisDsn] = Field(default=None, env="REDIS_URL")
     REDIS_POOL_MAX_CONNECTIONS: int = Field(default=50, env="REDIS_POOL_MAX_CONNECTIONS")
     
     # Vector Database
@@ -49,8 +42,8 @@ class Settings(BaseSettings):
     
     # Object Storage (MinIO/S3)
     MINIO_ENDPOINT: str = Field(default="localhost:9000", env="MINIO_ENDPOINT")
-    MINIO_ACCESS_KEY: str = Field(env="MINIO_ACCESS_KEY")
-    MINIO_SECRET_KEY: str = Field(env="MINIO_SECRET_KEY")
+    MINIO_ACCESS_KEY: Optional[str] = Field(default=None, env="MINIO_ACCESS_KEY")
+    MINIO_SECRET_KEY: Optional[str] = Field(default=None, env="MINIO_SECRET_KEY")
     MINIO_SECURE: bool = Field(default=False, env="MINIO_SECURE")
     MINIO_BUCKET_NAME: str = Field(default="rag-documents", env="MINIO_BUCKET_NAME")
     
@@ -201,8 +194,8 @@ class Settings(BaseSettings):
     MAX_QUERIES_PER_DAY: int = Field(default=1000, env="MAX_QUERIES_PER_DAY")
     
     # Background Tasks
-    CELERY_BROKER_URL: str = Field(env="CELERY_BROKER_URL")
-    CELERY_RESULT_BACKEND: str = Field(env="CELERY_RESULT_BACKEND")
+    CELERY_BROKER_URL: Optional[str] = Field(default=None, env="CELERY_BROKER_URL")
+    CELERY_RESULT_BACKEND: Optional[str] = Field(default=None, env="CELERY_RESULT_BACKEND")
     CELERY_TASK_SERIALIZER: str = Field(default="json", env="CELERY_TASK_SERIALIZER")
     CELERY_ACCEPT_CONTENT: List[str] = Field(default=["json"], env="CELERY_ACCEPT_CONTENT")
     CELERY_TIMEZONE: str = Field(default="UTC", env="CELERY_TIMEZONE")
@@ -340,6 +333,14 @@ class Settings(BaseSettings):
             "feedback_learning": self.ENABLE_FEEDBACK_LEARNING,
             "cost_optimization": self.ENABLE_COST_OPTIMIZATION,
         }
+    
+    def __init__(self, **kwargs):
+        """Initialize settings with Railway PORT support."""
+        super().__init__(**kwargs)
+        # Railway provides PORT instead of APP_PORT
+        port = os.getenv('PORT')
+        if port:
+            self.APP_PORT = int(port)
 
 
 @lru_cache()
