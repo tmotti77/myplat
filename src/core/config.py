@@ -16,8 +16,15 @@ class Settings(BaseSettings):
     APP_VERSION: str = Field(default="1.0.0", env="APP_VERSION")
     APP_DESCRIPTION: str = Field(default="Production-ready hybrid RAG AI platform", env="APP_DESCRIPTION")
     APP_HOST: str = Field(default="0.0.0.0", env="APP_HOST")
-    APP_PORT: int = Field(default=8000, env="APP_PORT")
+    APP_PORT: int = Field(default=8000)
     APP_DEBUG: bool = Field(default=False, env="APP_DEBUG")
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Railway provides PORT instead of APP_PORT
+        if not hasattr(self, 'APP_PORT') or self.APP_PORT == 8000:
+            port = os.getenv('PORT') or os.getenv('APP_PORT', '8000')
+            self.APP_PORT = int(port)
     APP_RELOAD: bool = Field(default=False, env="APP_RELOAD")
     
     # Database
